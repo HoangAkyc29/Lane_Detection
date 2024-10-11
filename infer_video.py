@@ -74,11 +74,6 @@ while cap.isOpened:
         start_time = time.time()
         labels = predict(model, extractor, image, args.device)
         # Open the file for appending and write the labels to the file.
-        with open('labels_data.txt', 'a') as f:
-            # Convert the labels tensor to a list or appropriate format before writing.
-            f.write(str(labels.cpu().tolist()))
-            # Write 5 blank lines.
-            f.write('\n' * 5)
         # print(labels)
         end_time = time.time()
 
