@@ -22,7 +22,7 @@ parser.add_argument(
 )
 parser.add_argument(
     '--device',
-    default='cuda:0',
+    default='cpu:0',
     help='compute device, cpu or cuda'
 )
 parser.add_argument(
