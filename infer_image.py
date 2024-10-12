@@ -13,6 +13,8 @@ import argparse
 import cv2
 import os
 import glob
+import time
+from extract_point_locate import find_coordinates
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -54,7 +56,9 @@ for image_path in image_paths:
     
     # Get labels.
     labels = predict(model, extractor, image, args.device)
-    
+    # toado = find_coordinates(labels)
+    # print(toado)
+
     # Get segmentation map.
     seg_map = draw_segmentation_map(
         labels.cpu(), LABEL_COLORS_LIST
@@ -62,6 +66,8 @@ for image_path in image_paths:
     outputs = image_overlay(image, seg_map)
     cv2.imshow('Image', outputs)
     cv2.waitKey(1)
+    # time.sleep(20)
+    
     
     # Save path.
     image_name = image_path.split(os.path.sep)[-1]

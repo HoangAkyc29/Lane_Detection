@@ -14,6 +14,12 @@ import cv2
 import time
 import os
 
+import pandas as pd
+import numpy as np
+import openpyxl
+
+from extract_point_locate import find_coordinates
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '--input',
@@ -73,8 +79,21 @@ while cap.isOpened:
         # Get labels.
         start_time = time.time()
         labels = predict(model, extractor, image, args.device)
+        # toado = find_coordinates(labels)
+        # print(toado)
         # Open the file for appending and write the labels to the file.
         # print(labels)
+        # Mở file 'labels_data.txt' để ghi dữ liệu
+        # Chuyển tensor thành numpy array
+        # labels_np = labels.cpu().numpy()  # Chuyển tensor về CPU và chuyển thành numpy array
+
+        # # Tạo DataFrame từ numpy array
+        # df = pd.DataFrame(labels_np)
+
+        # # Ghi DataFrame vào file Excel
+        # df.to_excel('/labels_data.xlsx', index=False)
+
+
         end_time = time.time()
 
         fps = 1 / (end_time - start_time)
