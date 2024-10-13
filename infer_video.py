@@ -18,7 +18,7 @@ import pandas as pd
 import numpy as np
 import openpyxl
 
-from extract_point_locate import find_coordinates
+# from extract_point_locate import find_coordinates
 
 parser = argparse.ArgumentParser()
 parser.add_argument(

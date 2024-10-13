@@ -14,7 +14,7 @@ import cv2
 import os
 import glob
 import time
-from extract_point_locate import find_coordinates
+from extract_point_locate import find_area_between_points
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -56,8 +56,9 @@ for image_path in image_paths:
     
     # Get labels.
     labels = predict(model, extractor, image, args.device)
+    # print(labels)
     # toado = find_coordinates(labels)
-    # print(toado)
+    print(find_area_between_points(labels))
 
     # Get segmentation map.
     seg_map = draw_segmentation_map(
@@ -66,7 +67,7 @@ for image_path in image_paths:
     outputs = image_overlay(image, seg_map)
     cv2.imshow('Image', outputs)
     cv2.waitKey(1)
-    # time.sleep(20)
+    time.sleep(20)
     
     
     # Save path.
