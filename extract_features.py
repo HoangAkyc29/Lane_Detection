@@ -96,14 +96,15 @@ def find_area_between_points_optimized(labels):
     A, B, C = find_ABC(labels)
     
     # Tìm các phần tử biên
-    boundary_indices = find_boundary_neighbors(labels)
+    # boundary_indices = find_boundary_neighbors(labels)
     
     # Tính diện tích giữa AB và các phần tử biên
-    m, _ = labels.shape
-    area_AB = calculate_area_optimized(B, A, boundary_indices, m)
-    area_AC = calculate_area_optimized(C, A, boundary_indices, m)
+    # m, _ = labels.shape
+    # area_AB = calculate_area_optimized(B, A, boundary_indices, m)
+    # area_AC = calculate_area_optimized(C, A, boundary_indices, m)
 
-    # number_zero = count_zeros_below_A(A, labels)
+    number_zero = count_zeros_below_A(A, labels)
     
-    return area_AB, area_AC, A, B, C
-    # return A, B, C, number_zero
+    # return area_AB, area_AC, A, B, C
+    # return A, B, C
+    return A, B, C, number_zero

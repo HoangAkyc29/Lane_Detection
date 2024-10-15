@@ -62,7 +62,8 @@ for image_path in image_paths:
     # print(labels)
     # toado = find_coordinates(labels)
     # print(find_area_between_points(labels))
-    print(find_area_between_points_optimized(labels))
+
+    # print(find_area_between_points_optimized(labels))
     end_time = time.time()
     fps = 1 / (end_time - start_time)
     print(fps)
@@ -74,7 +75,7 @@ for image_path in image_paths:
     outputs = image_overlay(image, seg_map)
     cv2.imshow('Image', outputs)
     cv2.waitKey(1)
-    time.sleep(20)
+    # time.sleep(20)
     
     
     # Save path.
