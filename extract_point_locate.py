@@ -76,7 +76,7 @@ def line_equation(p1, p2):
     # Tính hệ số a và b của phương trình đường thẳng y = ax + b giữa 2 điểm p1, p2
     x1, y1 = p1
     x2, y2 = p2
-    a = (y2 - y1) / (x2 - x1 + 0.1)
+    a = (y2 - y1) / (x2 - x1 + 0.0001)
     b = y1 - a * x1
     return a, b
 

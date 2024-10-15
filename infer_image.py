@@ -15,6 +15,8 @@ import os
 import glob
 import time
 from extract_point_locate import find_area_between_points
+import extract_features
+from extract_features import find_area_between_points_optimized
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -54,11 +56,16 @@ for image_path in image_paths:
         image = cv2.resize(image, (args.imgsz[0], args.imgsz[1]))
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     
+    start_time = time.time()
     # Get labels.
     labels = predict(model, extractor, image, args.device)
     # print(labels)
     # toado = find_coordinates(labels)
-    print(find_area_between_points(labels))
+    # print(find_area_between_points(labels))
+    print(find_area_between_points_optimized(labels))
+    end_time = time.time()
+    fps = 1 / (end_time - start_time)
+    print(fps)
 
     # Get segmentation map.
     seg_map = draw_segmentation_map(
