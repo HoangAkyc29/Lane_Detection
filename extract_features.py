@@ -65,6 +65,32 @@ def calculate_area_optimized(A, B, boundary_indices, m):
     
     return area.item()
 
+def count_zeros_below_A(A, labels):
+    # A = (x_A, y_A), trục tung là x_A
+    x_A, y_A = A
+    m, n = labels.shape
+    
+    # Cắt tensor theo trục tung x_A (tất cả các giá trị cùng cột x_A)
+    column_values = labels[:, x_A]
+    
+    # Tìm điểm 1 đầu tiên từ dưới lên
+    ones_below_A = torch.where(column_values == 1)[0]
+    
+    if len(ones_below_A) == 0:
+        return 0  # Nếu không có ô nào có giá trị 1 dưới A, trả về 0
+    
+    # Lấy y_min, vị trí của ô có giá trị 1 thấp nhất
+    y_min = ones_below_A.max().item()
+    
+    # Chỉ xét các ô giữa y_A và y_min
+    if y_min <= m - 1 - y_A:
+        return 0  # Không có ô nào giữa A và 1 bên dưới
+    
+    # Dùng slicing để đếm số ô bằng 0 giữa y_A và y_min
+    zeros_in_range = column_values[m - 1 - y_A:y_min] == 0
+    
+    return zeros_in_range.sum().item()
+
 def find_area_between_points_optimized(labels):
     # Tìm điểm A, B, C
     A, B, C = find_ABC(labels)
@@ -76,5 +102,8 @@ def find_area_between_points_optimized(labels):
     m, _ = labels.shape
     area_AB = calculate_area_optimized(B, A, boundary_indices, m)
     area_AC = calculate_area_optimized(C, A, boundary_indices, m)
+
+    # number_zero = count_zeros_below_A(A, labels)
     
     return area_AB, area_AC, A, B, C
+    # return A, B, C, number_zero
