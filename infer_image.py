@@ -63,7 +63,7 @@ for image_path in image_paths:
     # toado = find_coordinates(labels)
     # print(find_area_between_points(labels))
 
-    # print(find_area_between_points_optimized(labels))
+    print(find_area_between_points_optimized(labels))
     end_time = time.time()
     fps = 1 / (end_time - start_time)
     print(fps)

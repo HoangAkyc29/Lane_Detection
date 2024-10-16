@@ -19,22 +19,28 @@ def convert_to_xy(index, m):
     x = index[1].item()          # Tính x từ trái qua phải
     return (x, y)
 
-def find_ABC(labels):
-    m, n = labels.shape
-    boundary_indices = find_boundary_neighbors(labels)
+def find_ABC_points(tensor):
+    # Kích thước tensor là (300, 400)
+    height, width = tensor.shape
     
-    # Tìm điểm A (y cao nhất, tức index hàng nhỏ nhất)
-    A = boundary_indices[boundary_indices[:, 0].argmin()]
+    # Tạo mask chứa các vị trí có giá trị là 1 hoặc 2
+    mask = (tensor == 1) | (tensor == 2)
     
-    # Tìm điểm B (x nhỏ nhất, nếu bằng nhau thì y cao nhất)
-    B_candidates = boundary_indices[boundary_indices[:, 1] == boundary_indices[:, 1].min()]
-    B = B_candidates[B_candidates[:, 0].argmin()]
+    # Lấy các tọa độ của những điểm có giá trị 1 hoặc 2
+    coords = torch.nonzero(mask, as_tuple=False)
     
-    # Tìm điểm C (x lớn nhất, nếu bằng nhau thì y cao nhất)
-    C_candidates = boundary_indices[boundary_indices[:, 1] == boundary_indices[:, 1].max()]
-    C = C_candidates[C_candidates[:, 0].argmin()]
+    # Tìm điểm A: điểm cao nhất theo trục y
+    A = coords[torch.argmin(coords[:, 0])]
     
-    return convert_to_xy(A, m), convert_to_xy(B, m), convert_to_xy(C, m)
+    # Tìm điểm B: điểm gần nhất với trục Oy (tức x nhỏ nhất)
+    B_candidates = coords[coords[:, 1] == torch.min(coords[:, 1])]
+    B = B_candidates[torch.argmin(B_candidates[:, 0])]
+    
+    # Tìm điểm C: điểm xa nhất với trục Oy (tức x lớn nhất)
+    C_candidates = coords[coords[:, 1] == torch.max(coords[:, 1])]
+    C = C_candidates[torch.argmin(C_candidates[:, 0])]
+    
+    return A, B, C
 
 def line_equation_tensor(A, B):
     # Tính hệ số a và b cho phương trình đường thẳng y = ax + b cho tensor
@@ -92,19 +98,26 @@ def count_zeros_below_A(A, labels):
     return zeros_in_range.sum().item()
 
 def find_area_between_points_optimized(labels):
-    # Tìm điểm A, B, C
-    A, B, C = find_ABC(labels)
+    # Tìm điểm A, B, C bằng hàm find_ABC_points mới
+    A_idx, B_idx, C_idx = find_ABC_points(labels)
+    
+    m, n = labels.shape
+    
+    # Chuyển đổi từ tọa độ index sang tọa độ Oxy
+    A = convert_to_xy(A_idx, m)
+    B = convert_to_xy(B_idx, m)
+    C = convert_to_xy(C_idx, m)
     
     # Tìm các phần tử biên
-    # boundary_indices = find_boundary_neighbors(labels)
+    boundary_indices = find_boundary_neighbors(labels)
     
     # Tính diện tích giữa AB và các phần tử biên
-    # m, _ = labels.shape
-    # area_AB = calculate_area_optimized(B, A, boundary_indices, m)
-    # area_AC = calculate_area_optimized(C, A, boundary_indices, m)
+    area_AB = calculate_area_optimized(B, A, boundary_indices, m)
+    area_AC = calculate_area_optimized(C, A, boundary_indices, m)
 
-    number_zero = count_zeros_below_A(A, labels)
+    # number_zero = count_zeros_below_A(A, labels)
     
-    # return area_AB, area_AC, A, B, C
-    # return A, B, C
-    return A, B, C, number_zero
+    # return area_AB, area_AC, A, B, C, number_zero
+    # return A, B, C, number_zero
+    return A, B, C, area_AB, area_AC
+
