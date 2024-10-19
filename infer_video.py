@@ -20,7 +20,7 @@ import openpyxl
 
 # from extract_point_locate import find_coordinates
 from extract_point_locate import find_area_between_points
-
+from extract_features import find_area_between_points_optimized
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -81,7 +81,7 @@ while cap.isOpened:
         # Get labels.
         start_time = time.time()
         labels = predict(model, extractor, image, args.device)
-        find_area_between_points(labels)
+        find_area_between_points_optimized(labels)
         # toado = find_coordinates(labels)
         # print(toado)
         # Open the file for appending and write the labels to the file.

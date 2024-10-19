@@ -22,11 +22,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument(
     '--input',
     help='path to the input image directory',
-    default='input/inference_data/images'
+    default='input/train/images'
 )
 parser.add_argument(
     '--device',
-    default='cpu:0',
+    default='cuda:0',
     help='compute device, cpu or cuda'
 )
 parser.add_argument(
@@ -59,7 +59,7 @@ for image_path in image_paths:
     start_time = time.time()
     # Get labels.
     labels = predict(model, extractor, image, args.device)
-    # print(labels)
+    print(labels)
     # toado = find_coordinates(labels)
     # print(find_area_between_points(labels))
 
